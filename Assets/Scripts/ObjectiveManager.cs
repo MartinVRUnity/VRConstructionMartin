@@ -3,30 +3,24 @@ using TMPro;
 
 public class ObjectiveManager : MonoBehaviour
 {
-    // THIS LINE CREATES THE 'Instance' THAT TRASHBIN IS LOOKING FOR
     public static ObjectiveManager Instance;
 
     [Header("UI Text References")]
     [SerializeField] private TextMeshProUGUI generatorText;
     [SerializeField] private TextMeshProUGUI garbageText;
+    [SerializeField] private TextMeshProUGUI helmetText; // Add this
 
     [Header("Garbage Settings")]
     [SerializeField] private int totalGarbageToCollect = 3;
 
     private bool isGeneratorOn = false;
+    private bool isHelmetEquipped = false; // Add this
     private int currentGarbageCollected = 0;
 
     private void Awake()
     {
-        // Singleton setup so other scripts can talk to ObjectiveManager easily
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     private void Start()
@@ -40,6 +34,12 @@ public class ObjectiveManager : MonoBehaviour
         UpdateUI();
     }
 
+    public void SetHelmetEquipped() // Add this
+    {
+        isHelmetEquipped = true;
+        UpdateUI();
+    }
+
     public void AddGarbageCollected()
     {
         currentGarbageCollected++;
@@ -48,7 +48,6 @@ public class ObjectiveManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        // Update Generator Checklist line
         if (generatorText != null)
         {
             generatorText.text = isGeneratorOn 
@@ -56,17 +55,19 @@ public class ObjectiveManager : MonoBehaviour
                 : "[ ] Turn on Generator";
         }
 
-        // Update Garbage Checklist line
         if (garbageText != null)
         {
-            if (currentGarbageCollected >= totalGarbageToCollect)
-            {
-                garbageText.text = $"<color=green>[✓] Trash Cleared ({currentGarbageCollected}/{totalGarbageToCollect})</color>";
-            }
-            else
-            {
-                garbageText.text = $"[ ] Trash Thrown ({currentGarbageCollected}/{totalGarbageToCollect})";
-            }
+            garbageText.text = (currentGarbageCollected >= totalGarbageToCollect)
+                ? $"<color=green>[✓] Trash Cleared ({currentGarbageCollected}/{totalGarbageToCollect})</color>"
+                : $"[ ] Trash Thrown ({currentGarbageCollected}/{totalGarbageToCollect})";
+        }
+
+        // Add this for helmet checklist line
+        if (helmetText != null)
+        {
+            helmetText.text = isHelmetEquipped
+                ? "<color=green>[✓] Helmet Put on Worker</color>"
+                : "[ ] Put Helmet on Worker";
         }
     }
 }

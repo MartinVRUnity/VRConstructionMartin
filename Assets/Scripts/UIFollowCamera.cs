@@ -6,7 +6,7 @@ public class UIFollowCamera : MonoBehaviour
     [SerializeField] private Transform targetCamera;
     
     // Updated: X is negative (left), Y is positive (top/up), Z is distance forward
-    [SerializeField] private Vector3 offset = new Vector3(-0.3f, 0.2f, 1.2f); 
+    [SerializeField] private Vector3 offset = new Vector3(-0.1f, 0.2f, 1.2f); 
     [SerializeField] private float smoothSpeed = 5f;
 
     private void Start()
